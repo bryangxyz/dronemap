@@ -44,7 +44,9 @@ class MapContainer extends Component {
       const mapRef = this.refs.map; // looks for HTML div ref 'map' returned in render below
       const node = ReactDOM.findDOMNode(mapRef); // finds the 'map' div in the React DOM, name it node
 
-      const center = this.state.locations.length > 0 ? { lat: this.state.locations[0].location.latitude, lng: this.state.locations[0].location.longitude } : { lat: -37.8136276, lng: 144.96305759999996 }; // When there is no drone returned from API, set the center of the map to Melbourne.
+      const center = this.state.locations.length > 0 ? 
+        { lat: this.state.locations[0].location.latitude, lng: this.state.locations[0].location.longitude } : 
+        { lat: -37.8136276, lng: 144.96305759999996 }; // When there is no drone returned from API, set the center of the map to Melbourne.
 
       const mapConfig = Object.assign({}, {
         center, // sets center of google map to the location of the 1st drone
