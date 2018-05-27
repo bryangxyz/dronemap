@@ -68,6 +68,11 @@ class MapContainer extends Component {
     }
   }
 
+  /** @function handleRefresh gets new locations of the drones from api and refresh the markers on the map */
+  handleRefresh() {
+    this.getLocations();
+  }
+
   render() {
     const style = { // MUST specify the dimensions of the Google map or it won't work
       width: '100vw',
@@ -75,8 +80,15 @@ class MapContainer extends Component {
     };
 
     return (
-      <div ref='map' style={style}> 
-        loading map...
+      <div>
+        <button 
+          type="button" 
+          className="btn btn-primary"
+          onClick={this.handleRefresh.bind(this)}
+        >Refresh</button>
+        <div ref='map' style={style}> 
+          loading map...
+        </div>
       </div>
     )
   }
