@@ -73,7 +73,6 @@ class MapContainer extends Component {
           map.fitBounds(bounds);
         });
       }
-
     }
   }
 
@@ -92,7 +91,7 @@ class MapContainer extends Component {
       <div>
         <button 
           type="button" 
-          className="btn btn-primary ml-md-2 mb-md-3"
+          className="btn btn-primary ml-md-3 mb-md-3"
           onClick={this.handleRefresh.bind(this)}
         >Refresh</button>
         <div ref='map' style={style}> 

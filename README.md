@@ -11,7 +11,7 @@ npm install
 # Run the client
 npm start
 
-# Client runs on http://localhost:3000
+# Client runs on http://localhost:3000, and server runs on http://localhost:3001
 ```
 
 ## Built With
@@ -30,6 +30,7 @@ npm start
     3. I called the loadMap function which created a new google map and displayed all drone locations on the map with the zoom to cover all visible markers.  When the user hoveover each individual drone, the drone will also show its ID.
     4. when the window resized, the map will reset the zoom to cover all visible markers.
     5. I also added a refresh button for the map to get the new locations of the drones. 
+    6. I also added the logic to set the center of the map to Melbourne when the API fails to provide drone locations.
 * Tradeoffs:
   - Instead of using fetch to make HTTP request, I chose axios which is an additional dependency to install because axios performs automatic transforms of JSON data.  If you use .fetch() there is a two-step process when handing JSON data. The first is to make the actual request and then the second is to call the .json() method on the response.
 * Future Considerations for increased scale:
