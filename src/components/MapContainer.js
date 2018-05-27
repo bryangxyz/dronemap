@@ -9,17 +9,23 @@ class MapContainer extends Component {
   }
 
   componentDidMount() {
-    axios.get('https://codetest.kube.getswift.co/drones')
-      .then(res => {
-        this.setState({ // set this.state.locations to drone locations got from api
-          locations: res.data
-          }, 
-          this.loadMap // call loapMap function to load the google map
-        );
-      })
-      .catch(err => console.log(err));
+    this.getLocations();
   }
 
+  /** @function getLocations gets the locations of drones from api */
+  getLocations() {
+    axios('http://localhost:3001')
+    .then(res => {
+      this.setState({ // set this.state.locations to drone locations got from api
+        locations: res.data
+        }, 
+        this.loadMap // call loapMap function to load the google map
+      );
+    })
+    .catch(err => console.log(err));
+  }
+
+  /** @function loadMap creates a new google map and adds markers for drones */
   loadMap() {
     if (this.props && this.props.google) { // checks whether props have been passed
       const {google} = this.props; 
@@ -38,7 +44,7 @@ class MapContainer extends Component {
 
       const bounds = new google.maps.LatLngBounds();
 
-      // Add markers to map
+      /** Add markers to map */
       this.state.locations.forEach( location => { // iterate through locations saved in state
         const marker = new google.maps.Marker({ // creates a new Google maps Marker object
           position: {lat: location.location.latitude, lng: location.location.longitude}, // sets position of marker to specified location
@@ -48,10 +54,13 @@ class MapContainer extends Component {
         bounds.extend(marker.getPosition());
       });
 
-      // Set zoom of map to cover all visible markers
+      /** Set zoom of map to cover all visible markers */
       map.fitBounds(bounds);
 
-      // Resize Function
+      /**
+       * Re-zoom the map when the window is resized
+       * @listens resize
+       */
       google.maps.event.addDomListener(window, "resize", () => {
         google.maps.event.trigger(map, "resize");
         map.fitBounds(bounds);

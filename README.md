@@ -25,9 +25,9 @@ npm start
   - In this application, I added a simple Google Map to my React app and added the markers for the locations of drones.  I used create-react-app because it configures webpack, etc so I don't need to worry about all that configuration.  I then used google-maps-react which integrates React and Google Maps.  For the Google Maps API to work, you need a parent and child component.  For this, I used App.js as the parent component and MapContainer.js as the child.  
   - In App.js, I exported App wrapped inside the GoogleApiWrapper which allows it to access all the functionality of the Google Maps API. 
   - In MapContainer.js, 
-    - First, after the component mounts, I used axios to retrieve the locations of drones from the API provided.  (If you encounter "No 'Access-Control-Allow-Origin' header" error when using Chrome, please add Allow-Control-Allow-Origin: * plugin to your Chrome).
+    - First, after the component mounts, I used axios to retrieve the locations of drones from the API provided.  Given the cross domain issue between localhost and codetest.kube.getswift.co, I built a server.js file to serve the data on port 3001.
     - Second, I saved the locations of drone to this.state.
-    - Third, I called the loadMap function which created a new google map and displayed all drone locations on the map with the zoom to cover all visible markers.
+    - Third, I called the loadMap function which created a new google map and displayed all drone locations on the map with the zoom to cover all visible markers.  When the user hoveover each individual drone, the drone will also show its ID.
     - Last, when the window resized, the map will reset the zoom to cover all visible markers.
 * Tradeoffs:
   - Instead of using fetch to make HTTP request, I chose axios which is an additional dependency to install because axios performs automatic transforms of JSON data.  If you use .fetch() there is a two-step process when handing JSON data. The first is to make the actual request and then the second is to call the .json() method on the response.
