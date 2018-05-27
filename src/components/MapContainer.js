@@ -16,8 +16,12 @@ class MapContainer extends Component {
   getLocations() {
     axios('http://localhost:3001')
     .then(res => {
+      let locations = [];
+      if (Array.isArray(res.data)) {
+        locations = res.data;
+      }
       this.setState({ // set this.state.locations to drone locations got from api
-        locations: res.data
+        locations
         }, 
         this.loadMap // call loapMap function to load the google map
       );
@@ -34,37 +38,42 @@ class MapContainer extends Component {
       const mapRef = this.refs.map; // looks for HTML div ref 'map' returned in render below
       const node = ReactDOM.findDOMNode(mapRef); // finds the 'map' div in the React DOM, name it node
 
+      const center = this.state.locations.length > 0 ? {lat: this.state.locations[0].location.latitude, lng: this.state.locations[0].location.longitude} : {lat: -37.8136276, lng: 144.96305759999996} ; // When there is no drone returned from API, set the center of the map to Melbourne.
+
       const mapConfig = Object.assign({}, {
-        center: {lat: this.state.locations[0].location.latitude, lng: this.state.locations[0].location.longitude}, // sets center of google map to the location of the 1st drone
+        center, // sets center of google map to the location of the 1st drone
         zoom: 11, // sets zoom. Lower number is zoomed further out.
         mapTypeId: 'roadmap'
       });
 
       const map = new maps.Map(node, mapConfig); // creates a new Google map on the specified node (ref='map') with the specified config set above.
 
-      const bounds = new google.maps.LatLngBounds();
+      if (this.state.locations.length > 0) {
+        const bounds = new google.maps.LatLngBounds();
 
-      /** Add markers to map */
-      this.state.locations.forEach( location => { // iterate through locations saved in state
-        const marker = new google.maps.Marker({ // creates a new Google maps Marker object
-          position: {lat: location.location.latitude, lng: location.location.longitude}, // sets position of marker to specified location
-          map: map, // sets marker to appaer on the map we created
-          title: location.droneId.toString() // set the title of the marker
+        /** Add markers to map */
+        this.state.locations.forEach( location => { // iterate through locations saved in state
+          const marker = new google.maps.Marker({ // creates a new Google maps Marker object
+            position: {lat: location.location.latitude, lng: location.location.longitude}, // sets position of marker to specified location
+            map: map, // sets marker to appaer on the map we created
+            title: location.droneId.toString() // set the title of the marker
+          });
+          bounds.extend(marker.getPosition());
         });
-        bounds.extend(marker.getPosition());
-      });
-
-      /** Set zoom of map to cover all visible markers */
-      map.fitBounds(bounds);
-
-      /**
-       * Re-zoom the map when the window is resized
-       * @listens resize
-       */
-      google.maps.event.addDomListener(window, "resize", () => {
-        google.maps.event.trigger(map, "resize");
+  
+        /** Set zoom of map to cover all visible markers */
         map.fitBounds(bounds);
-      });
+
+        /**
+         * Re-zoom the map when the window is resized
+         * @listens resize
+         */
+        google.maps.event.addDomListener(window, "resize", () => {
+          google.maps.event.trigger(map, "resize");
+          map.fitBounds(bounds);
+        });
+      }
+
     }
   }
 
@@ -83,7 +92,7 @@ class MapContainer extends Component {
       <div>
         <button 
           type="button" 
-          className="btn btn-primary"
+          className="btn btn-primary ml-md-2 mb-md-3"
           onClick={this.handleRefresh.bind(this)}
         >Refresh</button>
         <div ref='map' style={style}> 
