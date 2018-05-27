@@ -4,6 +4,7 @@ import './styles/App.css';
 import { GoogleApiWrapper } from 'google-maps-react';
 
 import MapContainer from './components/MapContainer';
+import config from './configs/config';
 
 class App extends Component {
   render() {
@@ -17,5 +18,5 @@ class App extends Component {
 }
 
 export default GoogleApiWrapper({
-  apiKey: 'AIzaSyARgI4BYPt4xs2D8lU_bOo_DiFkrTOnYGQ'
+  apiKey: config.API_KEY
 })(App);
