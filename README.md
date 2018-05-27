@@ -33,6 +33,7 @@ npm start
     6. I also added the logic to set the center of the map to Melbourne when the API fails to provide drone locations.
 * Tradeoffs:
   - Instead of using fetch to make HTTP request, I chose axios which is an additional dependency to install because axios performs automatic transforms of JSON data.  If you use .fetch() there is a two-step process when handing JSON data. The first is to make the actual request and then the second is to call the .json() method on the response.
+  - Given the simplicity of the UI, I used bootstrap cdn instead of installing bootstrap.  If there is any issue with connecting to bootstrap, please install bootstrap 4.0 locally.
 * Future Considerations for increased scale:
   - If there will be large number of drones, I will also add a search function on UI to allow the user to search specific drone by drone ID.
   - If there will be more information to show for each drone, such as icon, content, etc, instead of looping through this.state.locations to create new marker object directly, I will create a new addMarker function to take in each drone as input.  The function will then create new marker for each drone, set icon and show content with event listener(such as click).
