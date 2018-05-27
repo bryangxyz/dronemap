@@ -11,4 +11,4 @@ app.get('/', (req, res) => {
     getDroneData().then(data => res.json(JSON.parse(data)));
 });
 
-app.listen(3001, () => console.log('Example app listening on port 3001!'));
+app.listen(3001, () => console.log('app listening on port 3001!'));
